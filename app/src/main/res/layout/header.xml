@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="10dp">
+
+    <ImageView
+        android:id="@+id/img_first"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:src="@drawable/dot"
+        />
+
+    <!--android:src="@drawable/tree6464"
+    android:layout_alignParentLeft="true"-->
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Diller"
+        android:paddingLeft="10dp"
+        android:textSize="@dimen/abc_text_size_medium_material"
+        android:layout_gravity="center"
+        android:textColor="#ff72c6fc"
+        android:textStyle="bold"/>
+
+
+</LinearLayout>
+
+
+
+
+
+
