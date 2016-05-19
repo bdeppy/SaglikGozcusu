@@ -13,6 +13,17 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    
+    <style name="materialCheckBoxStyle">
+        <item name="cbd_strokeColor">@drawable/color_switch_dark</item>
+        <item name="cbd_width">32dp</item>
+        <item name="cbd_height">32dp</item>
+        <item name="cbd_boxSize">20dp</item>
+        <item name="cbd_cornerRadius">2dp</item>
+        <item name="cbd_strokeSize">2dp</item>
+        <item name="cbd_animDuration">@android:integer/config_shortAnimTime</item>
+    </style>
+
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />

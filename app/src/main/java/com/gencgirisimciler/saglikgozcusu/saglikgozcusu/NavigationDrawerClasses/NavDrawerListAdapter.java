@@ -62,12 +62,12 @@ public class NavDrawerListAdapter extends BaseAdapter {
             convertView = mInflater.inflate(R.layout.drawer_list_item, null);
         }
          
-        ImageView imgIcon = (ImageView) convertView.findViewById(R.id.icon);
+//        ImageView imgIcon = (ImageView) convertView.findViewById(R.id.icon);
         TextView txtTitle = (TextView) convertView.findViewById(R.id.title);
-        TextView txtCount = (TextView) convertView.findViewById(R.id.counter);
-		final CheckBox toggle = (CheckBox) convertView.findViewById(R.id.check);
+//        TextView txtCount = (TextView) convertView.findViewById(R.id.counter);
+		final com.rey.material.widget.CheckBox toggle = (com.rey.material.widget.CheckBox) convertView.findViewById(R.id.check);
          
-        imgIcon.setImageResource(navDrawerItems.get(position).getIcon());        
+//        imgIcon.setImageResource(navDrawerItems.get(position).getIcon());
         txtTitle.setText(navDrawerItems.get(position).getTitle());
 
 		toggle.setChecked(true);
@@ -78,11 +78,11 @@ public class NavDrawerListAdapter extends BaseAdapter {
 
 				if(isChecked) {
 					tikliMiArray[position] = true;
-					toggle.setButtonDrawable(android.R.drawable.checkbox_on_background);
+//					toggle.setButtonDrawable(R.drawable.tickbox);
 				}
 				else {
 					tikliMiArray[position] = false;
-					toggle.setButtonDrawable(android.R.drawable.checkbox_off_background);
+//					toggle.setButtonDrawable(R.drawable.roundedcornerssquare);
 				}
 
 			}

@@ -28,6 +28,7 @@ import android.widget.ListView;
 import com.gencgirisimciler.saglikgozcusu.saglikgozcusu.NavigationDrawerClasses.NavDrawerItem;
 import com.gencgirisimciler.saglikgozcusu.saglikgozcusu.NavigationDrawerClasses.NavDrawerListAdapter;
 import com.gencgirisimciler.saglikgozcusu.saglikgozcusu.android.ResultsActivity;
+import com.gencgirisimciler.saglikgozcusu.saglikgozcusu.utils.GeneralClasses;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -63,18 +64,10 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
+        GeneralClasses.StatusBar statusBar = new GeneralClasses.StatusBar(this);
+        statusBar.setStatusBarColor(findViewById(R.id.statusBarBackground), getResources().getColor(R.color.colorPrimaryDark));
 
         View header = getLayoutInflater().inflate(R.layout.header, null);
-
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.dot);
 
         mTitle = mDrawerTitle = getTitle();
 
@@ -83,8 +76,7 @@ public class MainActivity extends AppCompatActivity {
         navMenuTitles = getResources().getStringArray(R.array.nav_drawer_items_small);
 
         // nav drawer icons from resources
-        navMenuIcons = getResources()
-                .obtainTypedArray(R.array.nav_drawer_icons);
+        navMenuIcons = getResources().obtainTypedArray(R.array.nav_drawer_icons);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
@@ -101,8 +93,6 @@ public class MainActivity extends AppCompatActivity {
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[8], navMenuIcons.getResourceId(8, -1)));
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[9], navMenuIcons.getResourceId(9, -1)));
 
-        //navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1), true, "22"));
-        //navDrawerItems.add(new NavDrawerItem(navMenuTitles[5], navMenuIcons.getResourceId(5, -1), true, "50+"));
         // Recycle the typed array
         navMenuIcons.recycle();
 
@@ -113,7 +103,6 @@ public class MainActivity extends AppCompatActivity {
         mDrawerList.addHeaderView(header);
         mDrawerList.setAdapter(adapter);
 
-        ////////////////      NavDrawerListAdapter.tikliMiArray[]
         // enabling action bar app icon and behaving it as toggle button
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -208,7 +197,6 @@ public class MainActivity extends AppCompatActivity {
             }
             break;
         }
-
         //Remove output file
         deleteFile(resultUrl);
 
@@ -234,7 +222,6 @@ public class MainActivity extends AppCompatActivity {
             case 0:
 //                fragment = new HomeFragment();
                 break;
-
 
             default:
                 CheckBox cb = (CheckBox)view.findViewById(R.id.check);

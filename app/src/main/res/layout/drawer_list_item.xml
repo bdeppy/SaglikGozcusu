@@ -5,71 +5,38 @@
     xmlns:materialdesign="http://schemas.android.com/apk/res-auto"
     android:minHeight="50dp"
     android:orientation="horizontal"
-    android:background="@android:color/white"
+    android:background="@android:color/white">
 
-    >
-
-    <ImageView
-        android:id="@+id/icon"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="12dp"
-        android:layout_marginRight="12dp"
-        android:contentDescription="Desc Item"
+    <com.rey.material.widget.CheckBox
+        android:id="@+id/check"
+        android:layout_alignParentStart="true"
+        materialdesign:paddingStart="10dp"
         android:layout_centerVertical="true"
-        android:layout_gravity="center_vertical"/>
-
-
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/materialCheckBoxStyle"
+        android:layout_alignParentLeft="true" />
 
     <TextView
         android:id="@+id/title"
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
-        android:layout_toRightOf="@id/icon"
+        android:layout_toRightOf="@id/check"
+        android:layout_toEndOf="@id/check"
         android:minHeight="20dp"
         android:layout_centerVertical="true"
         android:textColor="@android:color/black"
         android:gravity="center_vertical"
         android:paddingRight="40dp"
+        android:paddingEnd="40dp"
         android:textSize="@dimen/abc_text_size_medium_material"/>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="10dp"
-        android:layout_centerVertical="true">
-    <TextView android:id="@+id/counter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="8dp"
-        android:textColor="@android:color/black"
-        android:background="@android:color/white"/>
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_gravity="center_vertical"
-        android:layout_alignParentRight="true"
-        android:id="@+id/check"
-        android:focusable="false"
-        android:button="@drawable/dot"
-        />
-        <!--
-                <com.gc.materialdesign.views.CheckBox
-                    android:id="@+id/check"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:background="#1E88E5"
-                    android:focusable="false"
-                    materialdesign:check="true" /> -->
-    </RelativeLayout>
+
+
+
+
+
+
 
 
 </RelativeLayout>
