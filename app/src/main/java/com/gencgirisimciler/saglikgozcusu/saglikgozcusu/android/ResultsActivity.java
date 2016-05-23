@@ -2,27 +2,59 @@ package com.gencgirisimciler.saglikgozcusu.saglikgozcusu.android;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.blunderer.materialdesignlibrary.handlers.ActionBarHandler;
+import com.blunderer.materialdesignlibrary.handlers.ActionBarSearchHandler;
+import com.blunderer.materialdesignlibrary.listeners.OnSearchListener;
 import com.gencgirisimciler.saglikgozcusu.saglikgozcusu.R;
+import com.gencgirisimciler.saglikgozcusu.saglikgozcusu.utils.GeneralClasses;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
-public class ResultsActivity extends Activity {
+public class ResultsActivity extends com.blunderer.materialdesignlibrary.activities.Activity {
 
 	String outputPath;
 	TextView tv;
-	
+
+
+	@Override
+	protected boolean enableActionBarShadow() {
+		return false;
+	}
+
+	@Override
+	protected ActionBarHandler getActionBarHandler() {
+		return new ActionBarSearchHandler(this, new OnSearchListener() {
+
+			@Override
+			public void onSearched(String text) {
+				Toast.makeText(getApplicationContext(),
+						"Searching \"" + text + "\"", Toast.LENGTH_SHORT).show();
+			}
+
+		});
+	}
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		tv = new TextView(this);
-		setContentView(tv);
+//		setContentView(R.layout.activity_results);
+
+//		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+//		setSupportActionBar(toolbar);
+//
+		GeneralClasses.StatusBar statusBar = new GeneralClasses.StatusBar(this);
+		statusBar.setStatusBarColor(findViewById(R.id.statusBarBackground), getResources().getColor(R.color.colorPrimaryDark));
+
+		tv = (TextView)findViewById(R.id.sonucTextView);
+//		setContentView(tv);
 		
 		String imageUrl = "unknown";
 		
@@ -34,6 +66,11 @@ public class ResultsActivity extends Activity {
 		
 		// Starting recognition process
 		new AsyncProcessTask(this).execute(imageUrl, outputPath);
+	}
+
+	@Override
+	protected int getContentView() {
+		return R.layout.activity_results;
 	}
 
 	public void updateResults(Boolean success) {
@@ -76,7 +113,7 @@ public class ResultsActivity extends Activity {
 
 		public void run() {
 			tv.append( _message + "\n" );
-			setContentView( tv );
+//			setContentView( tv );
 		}
 
 		private final String _message;

@@ -1,29 +1,30 @@
 package com.gencgirisimciler.saglikgozcusu.saglikgozcusu;
 
 import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentManager;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
-import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.gencgirisimciler.saglikgozcusu.saglikgozcusu.NavigationDrawerClasses.NavDrawerItem;
 import com.gencgirisimciler.saglikgozcusu.saglikgozcusu.NavigationDrawerClasses.NavDrawerListAdapter;
@@ -51,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
     // slide menu items
     private String[] navMenuTitles;
     private TypedArray navMenuIcons;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,6 +131,8 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         mDrawerLayout.addDrawerListener(mDrawerToggle);
+
+        startActivity(new Intent(MainActivity.this,ResultsActivity.class));
     }
 
     public void captureImageFromSdCard( View view ) {
@@ -224,15 +228,18 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             default:
-                CheckBox cb = (CheckBox)view.findViewById(R.id.check);
+                com.rey.material.widget.CheckBox cb = (com.rey.material.widget.CheckBox)view.findViewById(R.id.check);
+                TextView textView = (TextView)view.findViewById(R.id.title);
                 if(NavDrawerListAdapter.tikliMiArray[position-1]) {
                     cb.setChecked(false);
                     NavDrawerListAdapter.tikliMiArray[position-1]=false;
+                    textView.setTextColor(Color.parseColor("#33999999"));
                 }
                 else
                 {
                     cb.setChecked(true);
                     NavDrawerListAdapter.tikliMiArray[position-1]=true;
+                    textView.setTextColor(Color.parseColor("#23b4f5"));
                 }
                 break;
         }
@@ -282,9 +289,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        return super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
     }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -293,7 +300,60 @@ public class MainActivity extends AppCompatActivity {
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
+        else if (id == R.id.action_yeni_kisi_ekle) {
+            displayAlertDialogKullaniciEkle();
+            return true;
+        }
 
         return false;
     }
+
+    public void displayAlertDialogKullaniciEkle() {
+        LayoutInflater inflater = getLayoutInflater();
+        View alertLayout = inflater.inflate(R.layout.dialog_layout_madde_ekle,null);
+
+        final com.rey.material.widget.EditText etKullaniciEkle = (com.rey.material.widget.EditText) alertLayout.findViewById(R.id.eklenecekKullaniciEditText);
+
+        AlertDialog.Builder alert = new AlertDialog.Builder(this,R.style.MyAlertDialogStyle);
+
+        alert.setTitle("Yeni Madde Ekleyiniz");
+        alert.setView(alertLayout);
+        alert.setNegativeButton("İptal", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(getBaseContext(), "Madde Ekleme İşlemi İptal Edildi", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        alert.setPositiveButton("Tamam", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+
+            }
+        });
+
+        //Toast.makeText(getBaseContext(), "Yeni IP 777: " + tvIP , Toast.LENGTH_SHORT).show();
+        final AlertDialog dialog = alert.create();
+        dialog.show();
+
+        /**
+         * AlertDialog.Builder yerine AlertDialog kullanılıp Positive Button'ı override ettik
+         */
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v) {
+                if(!etKullaniciEkle.getText().toString().equals(""))
+                {
+
+                }
+            }
+        });
+
+    }
+
 }

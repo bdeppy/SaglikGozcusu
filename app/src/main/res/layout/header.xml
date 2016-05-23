@@ -9,7 +9,7 @@
         android:id="@+id/img_first"
         android:layout_width="64dp"
         android:layout_height="64dp"
-        android:src="@drawable/dot"
+        android:src="@drawable/chemical_diagram"
         />
 
     <!--android:src="@drawable/tree6464"
@@ -18,11 +18,12 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Diller"
+        android:text="Maddeler"
         android:paddingLeft="10dp"
+        android:paddingStart="10dp"
         android:textSize="@dimen/abc_text_size_medium_material"
         android:layout_gravity="center"
-        android:textColor="#ff72c6fc"
+        android:textColor="#ff8000"
         android:textStyle="bold"/>
 
 

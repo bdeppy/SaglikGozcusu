@@ -3,6 +3,7 @@ package com.gencgirisimciler.saglikgozcusu.saglikgozcusu.NavigationDrawerClasses
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,7 +64,7 @@ public class NavDrawerListAdapter extends BaseAdapter {
         }
          
 //        ImageView imgIcon = (ImageView) convertView.findViewById(R.id.icon);
-        TextView txtTitle = (TextView) convertView.findViewById(R.id.title);
+        final TextView txtTitle = (TextView) convertView.findViewById(R.id.title);
 //        TextView txtCount = (TextView) convertView.findViewById(R.id.counter);
 		final com.rey.material.widget.CheckBox toggle = (com.rey.material.widget.CheckBox) convertView.findViewById(R.id.check);
          
@@ -78,10 +79,12 @@ public class NavDrawerListAdapter extends BaseAdapter {
 
 				if(isChecked) {
 					tikliMiArray[position] = true;
+					txtTitle.setTextColor(Color.parseColor("#FF494949"));
 //					toggle.setButtonDrawable(R.drawable.tickbox);
 				}
 				else {
 					tikliMiArray[position] = false;
+					txtTitle.setTextColor(Color.parseColor("#23b4f5"));
 //					toggle.setButtonDrawable(R.drawable.roundedcornerssquare);
 				}
 
