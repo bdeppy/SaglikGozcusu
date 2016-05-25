@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 
 
+import com.gencgirisimciler.saglikgozcusu.saglikgozcusu.R;
 import com.gencgirisimciler.saglikgozcusu.saglikgozcusu.ocrsdk.Client;
 import com.gencgirisimciler.saglikgozcusu.saglikgozcusu.ocrsdk.ProcessingSettings;
 import com.gencgirisimciler.saglikgozcusu.saglikgozcusu.ocrsdk.Task;
@@ -18,6 +19,8 @@ public class AsyncProcessTask extends AsyncTask<String, String, Boolean> {
 	public AsyncProcessTask(ResultsActivity activity) {
 		this.activity = activity;
 		dialog = new ProgressDialog(activity);
+//		dialog.setProgressStyle(R.style.LightInColorCircularProgressView);
+
 	}
 
 	private ProgressDialog dialog;
@@ -25,7 +28,7 @@ public class AsyncProcessTask extends AsyncTask<String, String, Boolean> {
 	private final ResultsActivity activity;
 
 	protected void onPreExecute() {
-		dialog.setMessage("Processing");
+		dialog.setMessage("İşlenmek Üzere Ayarlanıyor");
 		dialog.setCancelable(false);
 		dialog.setCanceledOnTouchOutside(false);
 		dialog.show();
@@ -82,7 +85,7 @@ public class AsyncProcessTask extends AsyncTask<String, String, Boolean> {
 			String installationId = settings.getString(instIdName, "");
 			restClient.applicationId += installationId;
 			
-			publishProgress( "Uploading image...");
+			publishProgress( "Dosya Yükleniyor...");
 			
 //			String language = "English"; // Comma-separated list: Japanese,English or German,French,Spanish etc.
 			String language = "Turkish,English"; // Comma-separated list: Japanese,English or German,French,Spanish etc.
@@ -91,7 +94,7 @@ public class AsyncProcessTask extends AsyncTask<String, String, Boolean> {
 			processingSettings.setOutputFormat( ProcessingSettings.OutputFormat.txt );
 			processingSettings.setLanguage(language);
 			
-			publishProgress("Uploading..");
+			publishProgress("Yükleniyor..");
 
 			// If you want to process business cards, uncomment this
 			/*
@@ -112,12 +115,12 @@ public class AsyncProcessTask extends AsyncTask<String, String, Boolean> {
 				// at http://ocrsdk.com/documentation/apireference/listFinishedTasks/).
 
 				Thread.sleep(5000);
-				publishProgress( "Waiting.." );
+				publishProgress( "Cevap Bekleniyor.." );
 				task = restClient.getTaskStatus(task.Id);
 			}
 			
 			if( task.Status == Task.TaskStatus.Completed ) {
-				publishProgress( "Downloading.." );
+				publishProgress( "İndiriliyor.." );
 				FileOutputStream fos = activity.openFileOutput(outputFile,Context.MODE_PRIVATE);
 				
 				try {
@@ -126,7 +129,7 @@ public class AsyncProcessTask extends AsyncTask<String, String, Boolean> {
 					fos.close();
 				}
 				
-				publishProgress( "Ready" );
+				publishProgress( "Hazır" );
 			} else if( task.Status == Task.TaskStatus.NotEnoughCredits ) {
 				throw new Exception( "Not enough credits to process task. Add more pages to your application's account." );
 			} else {

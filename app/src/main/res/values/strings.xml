@@ -1,11 +1,11 @@
 <resources>
-    <string name="app_name">Saglik Gözcüsü</string>
-    <string name="action_settings">Settings</string>
+    <string name="app_name">Sağlık Gözcüsü</string>
+    <string name="action_settings">Ayarlar</string>
 
-    <string name="menu_settings">Settings</string>
+    <string name="menu_settings">Ayarlar</string>
     <string name="fromCamera">Kamera</string>
     <string name="fromFile">Dosyalarım</string>
-    <string name="title_activity_results">Results</string>
+    <string name="title_activity_results">Sonuçlar</string>
     <string name="hello">hello</string>
 
     <string-array name="nav_drawer_items_small">

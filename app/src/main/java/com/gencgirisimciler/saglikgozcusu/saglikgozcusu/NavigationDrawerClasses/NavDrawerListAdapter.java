@@ -79,12 +79,12 @@ public class NavDrawerListAdapter extends BaseAdapter {
 
 				if(isChecked) {
 					tikliMiArray[position] = true;
-					txtTitle.setTextColor(Color.parseColor("#FF494949"));
+					txtTitle.setTextColor(Color.parseColor("#23b4f5"));
 //					toggle.setButtonDrawable(R.drawable.tickbox);
 				}
 				else {
 					tikliMiArray[position] = false;
-					txtTitle.setTextColor(Color.parseColor("#23b4f5"));
+					txtTitle.setTextColor(Color.parseColor("#33999999"));
 //					toggle.setButtonDrawable(R.drawable.roundedcornerssquare);
 				}
 

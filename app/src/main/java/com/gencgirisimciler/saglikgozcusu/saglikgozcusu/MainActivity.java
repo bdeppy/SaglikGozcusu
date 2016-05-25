@@ -21,7 +21,6 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,8 +30,14 @@ import com.gencgirisimciler.saglikgozcusu.saglikgozcusu.NavigationDrawerClasses.
 import com.gencgirisimciler.saglikgozcusu.saglikgozcusu.android.ResultsActivity;
 import com.gencgirisimciler.saglikgozcusu.saglikgozcusu.utils.GeneralClasses;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -53,6 +58,8 @@ public class MainActivity extends AppCompatActivity {
     private String[] navMenuTitles;
     private TypedArray navMenuIcons;
 
+    public static ArrayList<String> mMaddeListesi ;
+    HashMap<String,String> atemMadde=new HashMap<String,String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +72,8 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        mMaddeListesi = getMaddeList("maddeler.json");
 
         GeneralClasses.StatusBar statusBar = new GeneralClasses.StatusBar(this);
         statusBar.setStatusBarColor(findViewById(R.id.statusBarBackground), getResources().getColor(R.color.colorPrimaryDark));
@@ -84,16 +93,20 @@ public class MainActivity extends AppCompatActivity {
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
         navDrawerItems = new ArrayList<NavDrawerItem>();
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[0], navMenuIcons.getResourceId(0, -1)));
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], navMenuIcons.getResourceId(1, -1)));
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1)));
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1)));
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(4, -1)));
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[5], navMenuIcons.getResourceId(5, -1)));
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[6], navMenuIcons.getResourceId(6, -1)));
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[7], navMenuIcons.getResourceId(7, -1)));
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[8], navMenuIcons.getResourceId(8, -1)));
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[9], navMenuIcons.getResourceId(9, -1)));
+        for(String s : mMaddeListesi )
+        {
+            navDrawerItems.add(new NavDrawerItem(s, navMenuIcons.getResourceId(0, -1)));
+        }
+//        navDrawerItems.add(new NavDrawerItem(navMenuTitles[0], navMenuIcons.getResourceId(0, -1)));
+//        navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], navMenuIcons.getResourceId(1, -1)));
+//        navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1)));
+//        navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1)));
+//        navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(4, -1)));
+//        navDrawerItems.add(new NavDrawerItem(navMenuTitles[5], navMenuIcons.getResourceId(5, -1)));
+//        navDrawerItems.add(new NavDrawerItem(navMenuTitles[6], navMenuIcons.getResourceId(6, -1)));
+//        navDrawerItems.add(new NavDrawerItem(navMenuTitles[7], navMenuIcons.getResourceId(7, -1)));
+//        navDrawerItems.add(new NavDrawerItem(navMenuTitles[8], navMenuIcons.getResourceId(8, -1)));
+//        navDrawerItems.add(new NavDrawerItem(navMenuTitles[9], navMenuIcons.getResourceId(9, -1)));
 
         // Recycle the typed array
         navMenuIcons.recycle();
@@ -132,7 +145,6 @@ public class MainActivity extends AppCompatActivity {
         };
         mDrawerLayout.addDrawerListener(mDrawerToggle);
 
-        startActivity(new Intent(MainActivity.this,ResultsActivity.class));
     }
 
     public void captureImageFromSdCard( View view ) {
@@ -356,4 +368,34 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private ArrayList<String > getMaddeList(String fileName)
+    {
+        JSONArray jsonArray = null;
+
+        ArrayList<String> cList = new ArrayList<String>();
+
+        try {
+
+            InputStream is = getResources().getAssets().open(fileName);
+            int size = is.available();
+            byte[] data = new byte[size];
+            is.read(data);
+            is.close();
+
+            String json = new String(data,"UTF-8");
+            jsonArray= new JSONArray(json);
+
+            if(jsonArray!=null){
+                for(int i =0;i<jsonArray.length();i++)
+                {
+                    cList.add(jsonArray.getJSONObject(i).getString("Ingilizce"));
+                }
+            }
+        }
+        catch (IOException | JSONException e)
+        {
+            e.printStackTrace();
+        }
+        return  cList;
+    }
 }
