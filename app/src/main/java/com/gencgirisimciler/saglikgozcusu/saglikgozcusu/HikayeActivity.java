@@ -1,8 +1,11 @@
 package com.gencgirisimciler.saglikgozcusu.saglikgozcusu;
 
+import android.app.SearchManager;
+import android.content.ClipboardManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.ContextMenu;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,9 +44,17 @@ public class HikayeActivity extends com.blunderer.materialdesignlibrary.activiti
         sonucTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!sonucTextView.getText().toString().startsWith("Aradığınız")) {
-
+                if (sonucTextView.getText().toString().startsWith("\tAradığınız")) {
+                    searchTheText();
                 }
+            }
+        });
+
+        sonucTextView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                registerForContextMenu(sonucTextView);
+                return false;
             }
         });
 
@@ -65,6 +76,7 @@ public class HikayeActivity extends com.blunderer.materialdesignlibrary.activiti
                 Toast.makeText(getApplicationContext(),
                         "Searching \"" + text + "\"", Toast.LENGTH_SHORT).show();
 
+                searchTheText();
             }
 
         });
@@ -75,6 +87,17 @@ public class HikayeActivity extends com.blunderer.materialdesignlibrary.activiti
         return R.layout.activity_hikaye;
     }
 
+    public void searchTheText ()
+    {
+        Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
+        intent.putExtra(SearchManager.QUERY, getSupportActionBar().getTitle());
+        // catch event that there's no activity to handle intent
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        } else {
+            Toast.makeText(HikayeActivity.this, "Uygunsuz", Toast.LENGTH_LONG).show();
+        }
+    }
     private String getMaddeIndex(String fileName,int position)
     {
         String sonuc="" ;
@@ -109,5 +132,19 @@ public class HikayeActivity extends com.blunderer.materialdesignlibrary.activiti
             e.printStackTrace();
         }
         return  sonuc;
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        //user has long pressed your TextView
+        menu.add(0, v.getId(), 0, "Kopyala");
+
+        //cast the received View to TextView so that you can get its text
+        TextView yourTextView = (TextView)findViewById(R.id.hikayeActivitySonucTextView);
+
+        //place your TextView's text in clipboard
+        ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+        clipboard.setText(yourTextView.getText());
+        Toast.makeText(HikayeActivity.this, "Panoya Kopyalandı", Toast.LENGTH_SHORT).show();
     }
 }
