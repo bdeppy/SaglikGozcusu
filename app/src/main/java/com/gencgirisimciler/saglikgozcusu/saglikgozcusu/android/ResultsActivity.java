@@ -13,6 +13,7 @@ import com.blunderer.materialdesignlibrary.handlers.ActionBarSearchHandler;
 import com.blunderer.materialdesignlibrary.listeners.OnSearchListener;
 import com.gencgirisimciler.saglikgozcusu.saglikgozcusu.HikayeActivity;
 import com.gencgirisimciler.saglikgozcusu.saglikgozcusu.MainActivity;
+import com.gencgirisimciler.saglikgozcusu.saglikgozcusu.NavigationDrawerClasses.NavDrawerListAdapter;
 import com.gencgirisimciler.saglikgozcusu.saglikgozcusu.R;
 import com.gencgirisimciler.saglikgozcusu.saglikgozcusu.listview.MaddeListAdapter;
 import com.gencgirisimciler.saglikgozcusu.saglikgozcusu.listview.MaddeListesi;
@@ -71,7 +72,7 @@ public class ResultsActivity extends com.blunderer.materialdesignlibrary.activit
 				Toast.makeText(ResultsActivity.this, theAdapter.getItemName(position), Toast.LENGTH_SHORT).show();
 				Intent HikayeActivityGidenIntent = new Intent(ResultsActivity.this, HikayeActivity.class);
 				HikayeActivityGidenIntent.putExtra("MaddeAdi",theAdapter.getItemName(position));
-				if(totem.get(position))
+				if(resultListviewBooleanArraylist.get(position))
 					HikayeActivityGidenIntent.putExtra("MaddeIndex",position);
 				else
 					HikayeActivityGidenIntent.putExtra("MaddeIndex",-1);
@@ -140,8 +141,8 @@ public class ResultsActivity extends com.blunderer.materialdesignlibrary.activit
 
 			maddelerListedeVarMi(_message);
 
-			for(int i = 0;	i<atem.size();	i++)
-			mMaddeListesi.add((new MaddeListesi(atem.get(i), totem.get(i))));
+			for(int i = 0; i< resultListviewTextValueArraylist.size(); i++)
+			mMaddeListesi.add((new MaddeListesi( resultListviewTextValueArraylist.get(i), resultListviewBooleanArraylist.get(i))));
 
 			theAdapter.notifyDataSetChanged();
 		}
@@ -150,22 +151,37 @@ public class ResultsActivity extends com.blunderer.materialdesignlibrary.activit
 	}
 
 	HashMap<String,Boolean> atemMadde=new HashMap<String,Boolean>();
-	ArrayList<String> atem = new ArrayList<>();
-	ArrayList<Boolean> totem = new ArrayList<>();
+	ArrayList<String> resultListviewTextValueArraylist = new ArrayList<>();
+	ArrayList<Boolean> resultListviewBooleanArraylist = new ArrayList<>();
 
 	public void maddelerListedeVarMi (String message){
 
-		for(String s : MainActivity.mMaddeListesi) {
+		for (int i= 0 ; i<NavDrawerListAdapter.tikliMiArray.length;i++)
+			if(NavDrawerListAdapter.tikliMiArray[i])
+			{
+				if (containsIgnoreCase(message,MainActivity.mMaddeListesi.get(i))) {
+					resultListviewTextValueArraylist.add(MainActivity.mMaddeListesi.get(i));
+					resultListviewBooleanArraylist.add(true);
+				}
+				else
+				{
+					resultListviewTextValueArraylist.add(MainActivity.mMaddeListesi.get(i));
+					resultListviewBooleanArraylist.add(false);
+				}
+
+			}
+
+	/*	for(String s : MainActivity.mMaddeListesi) {
 			if (containsIgnoreCase(message,s)) {
-				atem.add(s);
-				totem.add(true);
+				resultListviewTextValueArraylist.add(s);
+				resultListviewBooleanArraylist.add(true);
 			}
 			else
 			{
-				atem.add(s);
-				totem.add(false);
+				resultListviewTextValueArraylist.add(s);
+				resultListviewBooleanArraylist.add(false);
 			}
-		}
+		}*/
 	}
 
 	/**

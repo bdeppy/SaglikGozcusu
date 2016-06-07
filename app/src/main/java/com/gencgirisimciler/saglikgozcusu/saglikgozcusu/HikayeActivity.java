@@ -36,10 +36,14 @@ public class HikayeActivity extends com.blunderer.materialdesignlibrary.activiti
         final TextView sonucTextView = (TextView)findViewById(R.id.hikayeActivitySonucTextView);
         int indexOf = ResultsActivityGelenIntent.getIntExtra("MaddeIndex",-1);
 
-        if(indexOf!=-1)
-            sonucTextView.setText("\t"+ getMaddeIndex("maddeler.json",indexOf));
-        else
+        if(indexOf!=-1) {
+            assert sonucTextView != null;
+            sonucTextView.setText(String.format("\t%s", getMaddeIndex("maddeler.json", indexOf)));
+        }
+        else {
+            assert sonucTextView != null;
             sonucTextView.setText("\tAradığınız madde bulunmamaktadır, internet üzerinden aratma yapmak için tıklayınız...");
+        }
 
         sonucTextView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,7 +63,6 @@ public class HikayeActivity extends com.blunderer.materialdesignlibrary.activiti
         });
 
         getSupportActionBar().setTitle(toolbarTitleName);
-
     }
 
     @Override
@@ -74,7 +77,7 @@ public class HikayeActivity extends com.blunderer.materialdesignlibrary.activiti
             @Override
             public void onSearched(String text) {
                 Toast.makeText(getApplicationContext(),
-                        "Searching \"" + text + "\"", Toast.LENGTH_SHORT).show();
+                        "Aratılıyor :  \"" + text + "\"", Toast.LENGTH_SHORT).show();
 
                 searchTheText();
             }
@@ -95,7 +98,7 @@ public class HikayeActivity extends com.blunderer.materialdesignlibrary.activiti
         if (intent.resolveActivity(getPackageManager()) != null) {
             startActivity(intent);
         } else {
-            Toast.makeText(HikayeActivity.this, "Uygunsuz", Toast.LENGTH_LONG).show();
+            Toast.makeText(HikayeActivity.this, "Uygun değil", Toast.LENGTH_LONG).show();
         }
     }
     private String getMaddeIndex(String fileName,int position)
@@ -118,8 +121,6 @@ public class HikayeActivity extends com.blunderer.materialdesignlibrary.activiti
 
             if(jsonArray!=null){
 
-//                MainActivity.mMaddeListesi.get(position)
-
                 sonuc= jsonArray.getJSONObject(position).getString("Turkce");
              /*   for(int i =0;i<jsonArray.length();i++)
                 {
@@ -131,9 +132,10 @@ public class HikayeActivity extends com.blunderer.materialdesignlibrary.activiti
         {
             e.printStackTrace();
         }
-        return  sonuc;
+        return sonuc;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         //user has long pressed your TextView

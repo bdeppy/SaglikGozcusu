@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -57,42 +56,77 @@ public class NavDrawerListAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
+		final ViewHolder holder;
 		if (convertView == null) {
             LayoutInflater mInflater = (LayoutInflater)
                     context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
             convertView = mInflater.inflate(R.layout.drawer_list_item, null);
-        }
-         
+			holder = new ViewHolder();
+
+			holder.textView = (TextView) convertView.findViewById(R.id.title);
+			holder.checkBox = (com.rey.material.widget.CheckBox) convertView.findViewById(R.id.check);
+			if(tikliMiArray[position]) {
+				holder.checkBox.setChecked(true);
+			}
+			else
+			holder.checkBox.setChecked(false);
+
+			convertView.setTag(holder);
+
+		}
+		// view is recycling
+		else {
+			holder = (ViewHolder) convertView.getTag();
+			if(tikliMiArray[position])
+			{
+				holder.checkBox.setChecked(true);
+//				tikliMiArray[position] = true;
+				holder.checkBox.setTextColor(Color.parseColor("#23b4f5"));
+			}
+			else
+			{
+				holder.checkBox.setChecked(false);
+//				tikliMiArray[position] = false;
+				holder.checkBox.setTextColor(Color.parseColor("#33999999"));
+			}
+		}
+  /*
 //        ImageView imgIcon = (ImageView) convertView.findViewById(R.id.icon);
         final TextView txtTitle = (TextView) convertView.findViewById(R.id.title);
 //        TextView txtCount = (TextView) convertView.findViewById(R.id.counter);
 		final com.rey.material.widget.CheckBox toggle = (com.rey.material.widget.CheckBox) convertView.findViewById(R.id.check);
-         
+         */
 //        imgIcon.setImageResource(navDrawerItems.get(position).getIcon());
-        txtTitle.setText(navDrawerItems.get(position).getTitle());
+		holder.textView.setText(navDrawerItems.get(position).getTitle());
 
-		toggle.setChecked(true);
+//		toggle.setChecked(true);
 
-		toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+		holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
 				if(isChecked) {
-					tikliMiArray[position] = true;
-					txtTitle.setTextColor(Color.parseColor("#23b4f5"));
+//					tikliMiArray[position] = true;
+					holder.textView.setTextColor(Color.parseColor("#23b4f5"));
 //					toggle.setButtonDrawable(R.drawable.tickbox);
 				}
 				else {
-					tikliMiArray[position] = false;
-					txtTitle.setTextColor(Color.parseColor("#33999999"));
+//					tikliMiArray[position] = false;
+					holder.textView.setTextColor(Color.parseColor("#33999999"));
 //					toggle.setButtonDrawable(R.drawable.roundedcornerssquare);
 				}
 
 			}
 		});
 
-
         return convertView;
+	}
+
+	private static class ViewHolder {
+
+		public TextView textView;
+		public com.rey.material.widget.CheckBox checkBox;
+
 	}
 
 }
