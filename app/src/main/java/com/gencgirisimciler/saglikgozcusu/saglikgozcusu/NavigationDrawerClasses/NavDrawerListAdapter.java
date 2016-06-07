@@ -106,12 +106,12 @@ public class NavDrawerListAdapter extends BaseAdapter {
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
 				if(isChecked) {
-//					tikliMiArray[position] = true;
+					tikliMiArray[position] = false;
 					holder.textView.setTextColor(Color.parseColor("#23b4f5"));
 //					toggle.setButtonDrawable(R.drawable.tickbox);
 				}
 				else {
-//					tikliMiArray[position] = false;
+					tikliMiArray[position] = true;
 					holder.textView.setTextColor(Color.parseColor("#33999999"));
 //					toggle.setButtonDrawable(R.drawable.roundedcornerssquare);
 				}

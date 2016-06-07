@@ -324,7 +324,7 @@ public class MainActivity extends AppCompatActivity {
         LayoutInflater inflater = getLayoutInflater();
         View alertLayout = inflater.inflate(R.layout.dialog_layout_madde_ekle,null);
 
-        final com.rey.material.widget.EditText etKullaniciEkle = (com.rey.material.widget.EditText) alertLayout.findViewById(R.id.eklenecekKullaniciEditText);
+        final com.rey.material.widget.EditText etMaddeEkle = (com.rey.material.widget.EditText) alertLayout.findViewById(R.id.eklenecekKullaniciEditText);
 
         AlertDialog.Builder alert = new AlertDialog.Builder(this,R.style.MyAlertDialogStyle);
 
@@ -359,7 +359,7 @@ public class MainActivity extends AppCompatActivity {
         {
             @Override
             public void onClick(View v) {
-                if(!etKullaniciEkle.getText().toString().equals(""))
+                if(!etMaddeEkle.getText().toString().equals(""))
                 {
 
                 }

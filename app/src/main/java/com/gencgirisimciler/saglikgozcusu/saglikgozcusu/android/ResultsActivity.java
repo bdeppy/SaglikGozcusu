@@ -1,5 +1,6 @@
 package com.gencgirisimciler.saglikgozcusu.saglikgozcusu.android;
 
+import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -43,6 +44,12 @@ public class ResultsActivity extends com.blunderer.materialdesignlibrary.activit
 
 			@Override
 			public void onSearched(String text) {
+				Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
+				intent.putExtra(SearchManager.QUERY, getSupportActionBar().getTitle());
+				// catch event that there's no activity to handle intent
+				if (intent.resolveActivity(getPackageManager()) != null) {
+					startActivity(intent);
+				}
 				Toast.makeText(getApplicationContext(),
 						"Searching \"" + text + "\"", Toast.LENGTH_SHORT).show();
 			}
