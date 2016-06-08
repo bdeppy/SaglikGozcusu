@@ -130,7 +130,6 @@ public class MainActivity extends AppCompatActivity {
         ) {
             public void onDrawerClosed(View view) {
                 getSupportActionBar().setTitle(R.string.app_name);
-                // değiştirmesin diye yapılmıstır
                 // calling onPrepareOptionsMenu() to show action bar icons
                 invalidateOptionsMenu();
             }
@@ -361,14 +360,18 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(!etMaddeEkle.getText().toString().equals(""))
                 {
-
+                    navDrawerItems.add(new NavDrawerItem(etMaddeEkle.getText().toString(), navMenuIcons.getResourceId(0, -1)));
+                    adapter.notifyDataSetChanged();
+                    dialog.dismiss();
                 }
+                else
+                    Toast.makeText(MainActivity.this, "Boş girdi yapılamamaktadır.", Toast.LENGTH_SHORT).show();
             }
         });
 
     }
 
-    private ArrayList<String > getMaddeList(String fileName)
+    private ArrayList<String> getMaddeList(String fileName)
     {
         JSONArray jsonArray = null;
 
