@@ -21,23 +21,19 @@ public class NavDrawerListAdapter extends BaseAdapter {
 	
 	private Context context;
 	private ArrayList<NavDrawerItem> navDrawerItems;
-	public static boolean [] tikliMiArray ;
+	public static ArrayList<Boolean>  tikliMiArray ;
 
 
 	public NavDrawerListAdapter(Context context, ArrayList<NavDrawerItem> navDrawerItems) {
 			this.context = context;
 			this.navDrawerItems = navDrawerItems;
 
-		tikliMiArray = new boolean[getCount()];
-		for (int i = 0; i < tikliMiArray.length; i++) {
-			tikliMiArray[i] = true;
+		tikliMiArray = new ArrayList<>(getCount());
+		for (int i = 0; i < getCount(); i++) {
+			tikliMiArray.add(true);
 		}
 
 		}
-
-	public boolean [] getTikliMiArray () {
-		return tikliMiArray;
-	}
 
 	@Override
 	public int getCount() {
@@ -65,11 +61,11 @@ public class NavDrawerListAdapter extends BaseAdapter {
 
 			holder.textView = (TextView) convertView.findViewById(R.id.title);
 			holder.checkBox = (com.rey.material.widget.CheckBox) convertView.findViewById(R.id.check);
-			if(tikliMiArray[position]) {
+			if(tikliMiArray.get(position))
 				holder.checkBox.setChecked(true);
-			}
+
 			else
-			holder.checkBox.setChecked(false);
+				holder.checkBox.setChecked(false);
 
 			convertView.setTag(holder);
 
@@ -77,7 +73,7 @@ public class NavDrawerListAdapter extends BaseAdapter {
 		// view is recycling
 		else {
 			holder = (ViewHolder) convertView.getTag();
-			if(tikliMiArray[position])
+			if(tikliMiArray.get(position))
 			{
 				holder.checkBox.setChecked(true);
 //				tikliMiArray[position] = true;
@@ -90,36 +86,25 @@ public class NavDrawerListAdapter extends BaseAdapter {
 				holder.checkBox.setTextColor(Color.parseColor("#33999999"));
 			}
 		}
-  /*
-//        ImageView imgIcon = (ImageView) convertView.findViewById(R.id.icon);
-        final TextView txtTitle = (TextView) convertView.findViewById(R.id.title);
-//        TextView txtCount = (TextView) convertView.findViewById(R.id.counter);
-		final com.rey.material.widget.CheckBox toggle = (com.rey.material.widget.CheckBox) convertView.findViewById(R.id.check);
-         */
-//        imgIcon.setImageResource(navDrawerItems.get(position).getIcon());
-		holder.textView.setText(navDrawerItems.get(position).getTitle());
 
-//		toggle.setChecked(true);
+		holder.textView.setText(navDrawerItems.get(position).getTitle());
 
 		holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
 				if(isChecked) {
-					tikliMiArray[position] = false;
+					tikliMiArray.set(position,false);
 					holder.textView.setTextColor(Color.parseColor("#23b4f5"));
-//					toggle.setButtonDrawable(R.drawable.tickbox);
-				}
-				else {
-					tikliMiArray[position] = true;
-					holder.textView.setTextColor(Color.parseColor("#33999999"));
-//					toggle.setButtonDrawable(R.drawable.roundedcornerssquare);
 				}
 
+				else {
+					tikliMiArray.set(position,true);
+					holder.textView.setTextColor(Color.parseColor("#33999999"));
+				}
 			}
 		});
-
-        return convertView;
+		return convertView;
 	}
 
 	private static class ViewHolder {

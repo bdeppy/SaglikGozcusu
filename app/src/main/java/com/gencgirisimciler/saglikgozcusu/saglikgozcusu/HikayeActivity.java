@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.ContextMenu;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +26,7 @@ import java.util.ArrayList;
  * Created by Bdeppy on 24.05.2016.
  */
 public class HikayeActivity extends com.blunderer.materialdesignlibrary.activities.Activity {
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,14 +38,25 @@ public class HikayeActivity extends com.blunderer.materialdesignlibrary.activiti
         final TextView sonucTextView = (TextView)findViewById(R.id.hikayeActivitySonucTextView);
         int indexOf = ResultsActivityGelenIntent.getIntExtra("MaddeIndex",-1);
 
-        if(indexOf!=-1) {
+      /*  if(indexOf!=-1) {
             assert sonucTextView != null;
-            sonucTextView.setText(String.format("\t%s", getMaddeIndex("maddeler.json", indexOf)));
         }
         else {
             assert sonucTextView != null;
             sonucTextView.setText("\tAradığınız madde bulunmamaktadır, internet üzerinden aratma yapmak için tıklayınız...");
-        }
+        }*/
+        assert sonucTextView != null;
+        sonucTextView.setText(String.format("\t%s", getMaddeIndex("maddeler.json", indexOf)));
+
+
+        ImageView imageView = (ImageView)findViewById(R.id.imageView);
+        if(indexOf < MainActivity.assetsFolderIndex)
+         imageView.setImageResource(R.drawable.microsd);
+//        else if(indexOf>=MainActivity.assetsFolderIndex && indexOf < MainActivity.jsonWebServiceIndex)
+//            imageView.setImageResource(R.drawable.cloud_connected);
+        else
+            imageView.setImageResource(R.drawable.cloud_connected);
+
 
         sonucTextView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,6 +145,9 @@ public class HikayeActivity extends com.blunderer.materialdesignlibrary.activiti
         {
             e.printStackTrace();
         }
+        if(sonuc.equals(""))
+            sonuc="Aradığınız madde bulunmamaktadır, internet üzerinden aratma yapmak için tıklayınız...";
+
         return sonuc;
     }
 

@@ -73,13 +73,13 @@ public class AsyncProcessTask extends AsyncTask<String, String, Boolean> {
 						android.provider.Settings.Secure.ANDROID_ID);
 				
 				// Obtain installation id from server
-				publishProgress( "First run: obtaining installation id..");
+				publishProgress( "Kayıt yapılıyor: kurulum id alınıyor..");
 				String installationId = restClient.activateNewInstallation(deviceId);
-				publishProgress( "Done. Installation id is '" + installationId + "'");
+				publishProgress( "Tamamlandı. Kurulum id : '" + installationId + "'");
 				
 				SharedPreferences.Editor editor = settings.edit();
 				editor.putString(instIdName, installationId);
-				editor.commit();
+				editor.apply();
 			} 
 			
 			String installationId = settings.getString(instIdName, "");

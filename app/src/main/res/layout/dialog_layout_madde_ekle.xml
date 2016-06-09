@@ -18,6 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:et_supportMode="charCounter"
+            android:inputType="textCapSentences"
             android:hint="Eklenecek Maddeyi Giriniz"
             android:textDirection="locale"
             android:paddingTop="8dp"

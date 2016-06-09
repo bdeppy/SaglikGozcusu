@@ -67,6 +67,7 @@ public class ResultsActivity extends com.blunderer.materialdesignlibrary.activit
 //		GeneralClasses.StatusBar statusBar = new GeneralClasses.StatusBar(this);
 //		statusBar.setStatusBarColor(findViewById(R.id.statusBarBackground), getResources().getColor(R.color.colorPrimaryDark));
 
+		mMaddeListesi.clear();
 		final ListView maddeListView = (ListView) findViewById(R.id.resultListView);
 		theAdapter=new MaddeListAdapter(this, mMaddeListesi);
 		assert maddeListView != null;
@@ -82,7 +83,8 @@ public class ResultsActivity extends com.blunderer.materialdesignlibrary.activit
 				if(resultListviewBooleanArraylist.get(position))
 					HikayeActivityGidenIntent.putExtra("MaddeIndex",position);
 				else
-					HikayeActivityGidenIntent.putExtra("MaddeIndex",-1);
+//					HikayeActivityGidenIntent.putExtra("MaddeIndex",-1);
+					HikayeActivityGidenIntent.putExtra("MaddeIndex",position);
 
 				startActivity(HikayeActivityGidenIntent);
 			}
@@ -157,14 +159,13 @@ public class ResultsActivity extends com.blunderer.materialdesignlibrary.activit
 		private final String _message;
 	}
 
-	HashMap<String,Boolean> atemMadde=new HashMap<String,Boolean>();
 	ArrayList<String> resultListviewTextValueArraylist = new ArrayList<>();
 	ArrayList<Boolean> resultListviewBooleanArraylist = new ArrayList<>();
 
 	public void maddelerListedeVarMi (String message){
 
-		for (int i= 0 ; i<NavDrawerListAdapter.tikliMiArray.length;i++)
-			if(NavDrawerListAdapter.tikliMiArray[i])
+		for (int i= 0 ; i<NavDrawerListAdapter.tikliMiArray.size();i++)
+			if(NavDrawerListAdapter.tikliMiArray.get(i))
 			{
 				if (containsIgnoreCase(message,MainActivity.mMaddeListesi.get(i))) {
 					resultListviewTextValueArraylist.add(MainActivity.mMaddeListesi.get(i));
@@ -175,7 +176,6 @@ public class ResultsActivity extends com.blunderer.materialdesignlibrary.activit
 					resultListviewTextValueArraylist.add(MainActivity.mMaddeListesi.get(i));
 					resultListviewBooleanArraylist.add(false);
 				}
-
 			}
 
 	/*	for(String s : MainActivity.mMaddeListesi) {

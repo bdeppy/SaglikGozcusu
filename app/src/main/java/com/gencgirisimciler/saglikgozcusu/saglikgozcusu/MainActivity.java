@@ -1,6 +1,7 @@
 package com.gencgirisimciler.saglikgozcusu.saglikgozcusu;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -8,6 +9,7 @@ import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -29,15 +31,22 @@ import com.gencgirisimciler.saglikgozcusu.saglikgozcusu.NavigationDrawerClasses.
 import com.gencgirisimciler.saglikgozcusu.saglikgozcusu.NavigationDrawerClasses.NavDrawerListAdapter;
 import com.gencgirisimciler.saglikgozcusu.saglikgozcusu.android.ResultsActivity;
 import com.gencgirisimciler.saglikgozcusu.saglikgozcusu.utils.GeneralClasses;
+import com.gencgirisimciler.saglikgozcusu.saglikgozcusu.utils.MaddeClass;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import org.ksoap2.SoapEnvelope;
+import org.ksoap2.serialization.SoapObject;
+import org.ksoap2.serialization.SoapPrimitive;
+import org.ksoap2.serialization.SoapSerializationEnvelope;
+import org.ksoap2.transport.AndroidHttpTransport;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -57,7 +66,8 @@ public class MainActivity extends AppCompatActivity {
     // slide menu items
     private String[] navMenuTitles;
     private TypedArray navMenuIcons;
-
+    public static int assetsFolderIndex = -1;
+    public static int jsonWebServiceIndex = -1;
     public static ArrayList<String> mMaddeListesi ;
     HashMap<String,String> atemMadde=new HashMap<String,String>();
 
@@ -70,11 +80,13 @@ public class MainActivity extends AppCompatActivity {
     }
     public void init() {
 
+        new _WebServiceAsyncTask().execute();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         mMaddeListesi = getMaddeList("maddeler.json");
 
+        assetsFolderIndex = mMaddeListesi.size();
         GeneralClasses.StatusBar statusBar = new GeneralClasses.StatusBar(this);
         statusBar.setStatusBarColor(findViewById(R.id.statusBarBackground), getResources().getColor(R.color.colorPrimaryDark));
 
@@ -165,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
         // using Environment.getExternalStorageState() before doing this.
 
         File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES), "ABBYY Cloud OCR SDK Demo App");
+                Environment.DIRECTORY_PICTURES), "Sağlık Gözcüsü");
         // This location works best if you want the created images to be shared
         // between applications and persist after your app has been uninstalled.
 
@@ -241,15 +253,15 @@ public class MainActivity extends AppCompatActivity {
             default:
                 com.rey.material.widget.CheckBox cb = (com.rey.material.widget.CheckBox)view.findViewById(R.id.check);
                 TextView textView = (TextView)view.findViewById(R.id.title);
-                if(NavDrawerListAdapter.tikliMiArray[position-1]) {
+                if(NavDrawerListAdapter.tikliMiArray.get(position-1)) {
                     cb.setChecked(false);
-                    NavDrawerListAdapter.tikliMiArray[position-1]=false;
+                    NavDrawerListAdapter.tikliMiArray.set(position-1,false);
                     textView.setTextColor(Color.parseColor("#33999999"));
                 }
                 else
                 {
                     cb.setChecked(true);
-                    NavDrawerListAdapter.tikliMiArray[position-1]=true;
+                    NavDrawerListAdapter.tikliMiArray.set(position-1,true);
                     textView.setTextColor(Color.parseColor("#23b4f5"));
                 }
                 break;
@@ -361,7 +373,9 @@ public class MainActivity extends AppCompatActivity {
                 if(!etMaddeEkle.getText().toString().equals(""))
                 {
                     navDrawerItems.add(new NavDrawerItem(etMaddeEkle.getText().toString(), navMenuIcons.getResourceId(0, -1)));
+                    mMaddeListesi.add(etMaddeEkle.getText().toString());
                     adapter.notifyDataSetChanged();
+                    NavDrawerListAdapter.tikliMiArray.add(true);
                     dialog.dismiss();
                 }
                 else
@@ -400,5 +414,83 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         return  cList;
+    }
+
+    // Web Servisimizdeki Namspace alanı
+    private final String _Namspace      =   "http://tempuri.org/";
+    // Web Servimizdeki Method ismi
+    private final String _MethodName    =   "SG_WebService";
+    // Namspace ile Method isminin birleşimi
+    private final String _Action        =   "http://tempuri.org/SG_WebService";
+    // Web Servisimizin Adresi
+    private final String _Url           =   "http://rpdwebservice.azurewebsites.net/WebService1.asmx"; ///??
+    private String _ResultValue         =   "";
+
+
+    MaddeClass[] maddeArray ;
+    public class _WebServiceAsyncTask extends AsyncTask<Void,Void,Void>
+    {
+        // Arkaplan işlemi başlamadan önce çalışacak olan fonksiyonumuz.
+        protected void onPreExecute() {
+
+        }
+        protected Void doInBackground(Void... voids) {
+
+
+            SoapObject request = new SoapObject(_Namspace, _MethodName);
+            // Web Servisimize gönderilcek parametreleri ekliyoruz.
+            //  request.addProperty("s1", _birinci_sayi.toString());
+            //  request.addProperty("s2",_birinci_sayi.toString());
+
+
+
+            SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER12);
+            envelope.env ="http://schemas.xmlsoap.org/soap/envelope/";
+
+            // WebServisimiz ASP.NET ile hazırlandığı için mutlaka TRUE değerini vermeliyiz.
+            envelope.dotNet = true;
+            envelope.setOutputSoapObject(request);
+
+            AndroidHttpTransport aht = new AndroidHttpTransport(_Url);
+            aht.debug=true;
+
+            try {
+
+                aht.call(_Action,envelope);
+                SoapPrimitive response = (SoapPrimitive)envelope.getResponse();
+                // Web servisimizden geri gelen sonucu değişkenimize aktarıyoruz.
+                _ResultValue=response.toString();
+
+                JSONArray JSONArrayForResult = new JSONArray(_ResultValue);
+                maddeArray = new MaddeClass[JSONArrayForResult.length()];
+                for (int i = 0; i < JSONArrayForResult.length(); i++) {
+                    JSONObject maddeObject = JSONArrayForResult.getJSONObject(i);
+                    maddeArray[i] = new MaddeClass(maddeObject.getString("MaddeAdi"),maddeObject.getString("MaddeAciklamasi"));
+                }
+            }catch (Exception e){
+
+                _ResultValue=e.toString();
+            }
+            return null;
+        }
+
+
+        @Override
+        protected void onPostExecute(Void result) {
+            // Sonucu yazdıracağımız TextView'ı tanımlıyoruz ve değerini veriyoruz.
+            /*TextView textView =(TextView)findViewById(R.id.textView);
+            if (textView != null) {
+                textView.setText(_ResultValue);
+            }*/
+
+            for (MaddeClass aMaddeArray : maddeArray) {
+                mMaddeListesi.add(aMaddeArray.getMaddeAdi());
+                navDrawerItems.add(new NavDrawerItem(aMaddeArray.getMaddeAdi(), navMenuIcons.getResourceId(0, -1)));
+                NavDrawerListAdapter.tikliMiArray.add(true);
+            }
+            jsonWebServiceIndex = mMaddeListesi.size();
+            adapter.notifyDataSetChanged();
+
+        }
     }
 }
