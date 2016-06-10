@@ -427,7 +427,7 @@ public class MainActivity extends AppCompatActivity {
     private String _ResultValue         =   "";
 
 
-    MaddeClass[] maddeArray ;
+    public static MaddeClass[] maddeArray ;
     public class _WebServiceAsyncTask extends AsyncTask<Void,Void,Void>
     {
         // Arkaplan işlemi başlamadan önce çalışacak olan fonksiyonumuz.

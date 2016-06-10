@@ -54,9 +54,14 @@ public class HikayeActivity extends com.blunderer.materialdesignlibrary.activiti
          imageView.setImageResource(R.drawable.microsd);
 //        else if(indexOf>=MainActivity.assetsFolderIndex && indexOf < MainActivity.jsonWebServiceIndex)
 //            imageView.setImageResource(R.drawable.cloud_connected);
-        else
+        else if(indexOf >= MainActivity.assetsFolderIndex && indexOf< MainActivity.jsonWebServiceIndex) {
             imageView.setImageResource(R.drawable.cloud_connected);
-
+            sonucTextView.setText(MainActivity.maddeArray[indexOf-MainActivity.assetsFolderIndex].getMaddeAciklamasi());
+        }
+        else
+        {
+            imageView.setImageResource(R.drawable.cloud_connected);
+        }
 
         sonucTextView.setOnClickListener(new View.OnClickListener() {
             @Override
